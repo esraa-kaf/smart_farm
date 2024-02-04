@@ -178,3 +178,18 @@ exports.checkAuthorizationInnerUser=async(req,res, next)=>{
     }
 }
 
+// upload image
+// exports.uploadImage=async(req,res)=>{
+//   if (!req.file) {
+//     console.log("No file received");
+//     return res.send({
+//       success: false
+//     });
+
+//   } else {
+//     console.log('file received');
+//     return res.send({
+//       success: true
+//     })
+//   }
+// }
