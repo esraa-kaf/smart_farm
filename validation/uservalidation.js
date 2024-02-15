@@ -1,5 +1,5 @@
 const {body, check,param}=require("express-validator");
-const User = require("../models/usermodel");
+const User = require("../models/userModel");
 /////////////////////////////////////////////////////////*******************************/////////////////////////////////////////////////
 exports.validateNewUser=[
     body("name").notEmpty().withMessage("name is required .").isString().withMessage("name must string"),

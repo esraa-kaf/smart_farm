@@ -1,7 +1,10 @@
 
 const e = require("express");
-const User = require("../models/usermodel");
+const User = require("../models/userModel");
+const path =require('path')
 const bcrypt = require('bcryptjs');
+const imageMw=require("../middleware/imageMw");
+const { error } = require("console");
 // const { checkUserPermession } = require("../middleware/updateUserAuthorization");
 const notFoundMsg="user not exist to update!";
 function comparePassword(password,confirm_password){
@@ -134,15 +137,23 @@ exports.updateUser=async (req,res)=>{
      //  console.log(req.id)
     // user exist
  // نفذ ليا الفانكشن اللى جوا ملف updateUserAuthorization
-  
-    // sec step update
+    const {avatar,password,name,city,governorate,number}=req.body;
+      if (avatar){
+        // call you func (avatar) 
+        // convertAvatar();
+        // return name of image  
+        // return file.filename;
+        const fileName = await imageMw.proccesAvatar(avatar,'users');
+        console.log("filename   ",fileName)
+         user.avatar=fileName
+      }
+        // sec step update
       // =====   if (cond) ? true cond : false cond
-      
-        user.name=req.body.name? req.body.name : user.name;
-    user.password=req.body.password?hashedPassword:user.password;
-    user.city=req.body.city ? req.body.city:user.city;
-    user.governorate=req.body.governorate?req.body.governorate:user.governorate;
-    user.number=req.body.number ? req.body.number:user.number;
+    user.name=name? name : user.name;
+    user.password=password?hashedPassword:user.password;
+    user.city=city ? city:user.city;
+    user.governorate=governorate?governorate:user.governorate;
+    user.number=number ? number:user.number;
     console.log("updatttttt ",user)
     user.save();
       return  res.status(200).json({status_code:200, message:"updated",data:User})
@@ -180,16 +191,41 @@ exports.checkAuthorizationInnerUser=async(req,res, next)=>{
 
 // upload image
 // exports.uploadImage=async(req,res)=>{
-//   if (!req.file) {
-//     console.log("No file received");
-//     return res.send({
-//       success: false
-//     });
+//   if (!req.image) {
+//   console.log("No image received");
+//   return res.send({
+//     success: false
+//   });
 
-//   } else {
-//     console.log('file received');
-//     return res.send({
-//       success: true
-//     })
+// } else {
+//   console.log('image received');
+//   return res.send({
+//     success: true
+//   })
+  
+// }
+// }
+
+
+/// forget password by phone
+// exports.forgetPasswordByPhone=(req,res)=>{
+//   const { number } = req.body;
+//   const accountSid = process.env.accountSid;
+//   const authToken = process.env.authToken;
+//   const client = require('twilio')(accountSid, authToken);
+// try{
+//   client.messages .create({
+//     body: 'Hello from twilio-node',
+//     to: '+201024033970', // Text your number
+//     from: '+201024033970', // From a valid Twilio number
+//   })
+//   res.json({ success: true, message: 'Password reset token sent successfully.' })
 //   }
+
+//   catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: 'Failed to send reset token.' });
+//   }
+  
+
 // }

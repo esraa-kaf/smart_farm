@@ -46,10 +46,10 @@ const userSchema = new mongoose.Schema({
 
 
 
-  //======defaultValue: http://placekitten.com/250/250
+      
 })
 
-
+//======defaultValue: http://placekitten.com/250/250
 // //token
 
 // userSchema.methods.generateToken =async function(id){
@@ -57,15 +57,6 @@ const userSchema = new mongoose.Schema({
 //     return token
     
 // }
-
-
-
-
-
-
-
-
-
 
 
 
