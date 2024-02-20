@@ -40,7 +40,9 @@ router.delete('/user/:id', authMw, usercontroller.checkAuthorizationInnerUser,va
 // router.post('/convert', imageMw.convertAvatar)
 
 // forget
-// router.get('/forget-password',generateToken,usercontroller.forgetPasswordByPhone)
+router.post('/forget-passwordByPhone',usercontroller.forgetPasswordByPhone)
+
+
 
 
 

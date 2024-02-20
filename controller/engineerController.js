@@ -184,11 +184,13 @@ exports.resetPassword=async(req,res)=>{
   
   const { newPassword } = req.body
   const {  hash} = req.params
+  
   try{
 
     let userTest = nodeCache.getMyCash().get(`${hash}`)
     console.log("userTest   ================  ",userTest);
-    if(!userTest){
+    let current_date=new Date()
+    if(userTest && userTest.expireTime > current_date){
       return res.status(400).json({ message: 'Invalid or expired reset .' })
     }
   

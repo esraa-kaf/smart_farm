@@ -5,6 +5,7 @@ const path =require('path')
 const bcrypt = require('bcryptjs');
 const imageMw=require("../middleware/imageMw");
 const { error } = require("console");
+const twilio = require('twilio');
 // const { checkUserPermession } = require("../middleware/updateUserAuthorization");
 const notFoundMsg="user not exist to update!";
 function comparePassword(password,confirm_password){
@@ -189,43 +190,72 @@ exports.checkAuthorizationInnerUser=async(req,res, next)=>{
     }
 }
 
-// upload image
-// exports.uploadImage=async(req,res)=>{
-//   if (!req.image) {
-//   console.log("No image received");
-//   return res.send({
-//     success: false
-//   });
 
-// } else {
-//   console.log('image received');
-//   return res.send({
-//     success: true
-//   })
-  
-// }
-// }
 
 
 /// forget password by phone
-// exports.forgetPasswordByPhone=(req,res)=>{
-//   const { number } = req.body;
-//   const accountSid = process.env.accountSid;
-//   const authToken = process.env.authToken;
-//   const client = require('twilio')(accountSid, authToken);
+exports.forgetPasswordByPhone=async(req,res)=>{
+  const { number } = req.body;
+   // Find the user by phonenumber
+   const user = await User.findOne({ number });
+   console.log(user);
+   if(!user){
+    res.status(401).json({
+      success: false,
+       message: "user isn't exist"
+      })
+  }
+  
+  // Generate a random 6-digit OTP
+function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
+const otp = generateOTP();
+console.log("otp         ===> ",otp);
+// In-memory storage for OTPs 
+const otpStorage = {};
+otpStorage[number] = otp;
+///////////////////////////////////////
+const accountSid = process.env.accountSid;
+const authToken = process.env.authToken;
+const twilioClient = require('twilio')(accountSid, authToken);
+  // Send OTP via SMS
+function sendOTP(number, otp) {
+  return twilioClient.messages.create({
+    body: `Your OTP for password reset: ${otp}`,
+    from: '+18667402946',
+    to: number,
+  });
+}
+
+
+
+sendOTP(number, otp)
+.then(() => {
+  res.json({ success: true, message: 'OTP sent successfully' });
+})
+.catch((error) => {
+  console.error('Error sending OTP:', error);
+  if (error.code && error.moreInfo) {
+    console.error(`Twilio Error Code: ${error.code}`);
+    console.error(`Twilio More Info: ${error.moreInfo}`);
+  }
+  res.status(500).json({ success: false, message: 'Error sending OTP' });
+});
 // try{
-//   client.messages .create({
-//     body: 'Hello from twilio-node',
-//     to: '+201024033970', // Text your number
-//     from: '+201024033970', // From a valid Twilio number
+//   twilioClient.messages .create({
+//     body: `Your OTP for password reset: ${otp}`,
+//     from: '+201024033970',   // From a valid Twilio number
+//     to: `${req.body.number}`, // Text your number
+    
 //   })
-//   res.json({ success: true, message: 'Password reset token sent successfully.' })
+//   res.json({ success: true, message: 'Password reset otp sent successfully.' })
 //   }
 
 //   catch (error) {
 //     console.error(error);
-//     res.status(500).json({ success: false, message: 'Failed to send reset token.' });
+//     res.status(500).json({ success: false, message: 'Failed to send reset otp.' });
 //   }
   
 
-// }
+}
