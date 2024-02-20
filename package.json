@@ -20,6 +20,7 @@
     "jsonwebtoken": "^9.0.2",
     "mime": "^2.6.0",
     "mongoose": "^8.0.1",
+    "mongoose-sequence": "^6.0.1",
     "node-base64-image": "^2.0.6",
     "node-cache": "^5.1.2",
     "node-twillo-otp-manager": "^1.0.0",

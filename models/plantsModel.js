@@ -1,6 +1,10 @@
 const mongoose =require('mongoose')
+const AutoIncrement = require("mongoose-sequence")(mongoose)
+plantsSchema.plugin(AutoIncrement, { id: 'userCounter' });
 const plantsSchema = new mongoose.Schema({
- _id: Number,
+    _id:{
+        type:Number
+     },
  name:{
    type:String,
 
