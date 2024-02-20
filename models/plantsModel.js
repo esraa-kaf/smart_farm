@@ -7,14 +7,10 @@ const plantsSchema = new mongoose.Schema({
  },
  about:{
    type:String,
-   size: String,
-   size: large
 
  },
  after_disease:{
-  type:Option,
-  size: String,
-  size: large
+  type:String,
  },
  category_id:{
     type:Number,

@@ -4,7 +4,8 @@ const plantsAvatarSchema=new mongoose.Schema({
   avatar:String,
   status:{
     type: String,
-     enum: ["after", "before"]
+     enum: ["after", "before"],
+     default:"before"
     },
     plants_Id:ref('plantsModel')
 
