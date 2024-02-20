@@ -1,8 +1,11 @@
 const mongoose =require('mongoose')
-
+const AutoIncrement = require("mongoose-sequence")(mongoose)
 
 
 const engineerSchema = new mongoose.Schema({
+    _id:{
+        type:Number
+     },
     name: {
         type: String,
         required: true,
@@ -59,6 +62,8 @@ const engineerSchema = new mongoose.Schema({
 //   }
 }
 )
+engineerSchema.plugin(AutoIncrement, { id: 'engineerCounter' });
+
 // Engineer.index({email: 1, name: 1,phone:1}, {unique: true});
 
 const Engineer = mongoose.model('engineers' ,engineerSchema )

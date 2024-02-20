@@ -1,6 +1,5 @@
 const mongoose=require('mongoose')
 const AutoIncrement = require("mongoose-sequence")(mongoose)
-plantsAvatarSchema.plugin(AutoIncrement, { id: 'userCounter' });
 const plantsAvatarSchema=new mongoose.Schema({
     _id:{
         type:Number
@@ -15,5 +14,6 @@ const plantsAvatarSchema=new mongoose.Schema({
 
   
 })
+plantsAvatarSchema.plugin(AutoIncrement, { id: 'plantsAvatarCounter' });
 const plantsAvatars = mongoose.model('plantsAvatars',plantsAvatarSchema)
 module.exports=plantsAvatars

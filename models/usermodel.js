@@ -3,7 +3,12 @@ const validator =require('validator')
 const bcrypt = require('bcryptjs');
 const { option, string } = require('yargs');
 var jwt = require('jsonwebtoken');
+const AutoIncrement = require("mongoose-sequence")(mongoose)
+
 const userSchema = new mongoose.Schema({
+    _id:{
+        type:Number
+     },
     number:{
         type:String,
         trim:true,
@@ -48,6 +53,7 @@ const userSchema = new mongoose.Schema({
 
       
 })
+userSchema.plugin(AutoIncrement, { id: 'userCounter' });
 
 //======defaultValue: http://placekitten.com/250/250
 // //token
