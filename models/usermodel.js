@@ -54,17 +54,5 @@ const userSchema = new mongoose.Schema({
       
 })
 userSchema.plugin(AutoIncrement, { id: 'userCounter' });
-
-//======defaultValue: http://placekitten.com/250/250
-// //token
-
-// userSchema.methods.generateToken =async function(id){
-//     const token =jwt.sign({_id:id .toString()}, "esraa1234")
-//     return token
-    
-// }
-
-
-
 const User = mongoose.model('users' ,userSchema )
 module.exports=User

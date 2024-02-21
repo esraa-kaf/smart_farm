@@ -28,6 +28,7 @@ exports.validateNewEng=[
         });
       }),
     body("city").notEmpty().withMessage("city is required .").isString().withMessage("city must string"),
+    body("payment_amount").notEmpty().withMessage("payment_amount is required").isNumeric().withMessage("payment_amount must be number"),
     body("governorate").notEmpty().withMessage("governorate is required .").isString().withMessage("governorate must string"),
     body("department").notEmpty().withMessage("department is required").isString().withMessage("department  must string"),
     body("email").notEmpty().withMessage("email  is required").isEmail().withMessage("email must be valid"),
@@ -72,6 +73,7 @@ exports.updateEngById=[
       });
     }),
   body("city").optional().isString().withMessage("city must string"),
+  body("payment_amount").notEmpty().withMessage("payment_amount is required").isNumeric().withMessage("payment_amount must be number"),
   body("email").notEmpty().withMessage("email  is required").isEmail().withMessage("email must be valid"),
   check("email").custom((value) => {
     console.log("valllll     ",value)

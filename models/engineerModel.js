@@ -45,6 +45,10 @@ const engineerSchema = new mongoose.Schema({
     type: String,
     required: true
        },
+    payment_amount:{
+     required:true,
+     type:Number
+    },
  
      avatar:{
     type:String,

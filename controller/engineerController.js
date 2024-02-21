@@ -9,11 +9,11 @@ const nodeCache = require( "../config/configCache" );
 
 
 exports.createNewEng=async(req,res)=>{
-    const {name,phone,email,password, governorate,city,department}=req.body;
+    const {name,phone,email,password, governorate,city,department,payment_amount}=req.body;
        
     
        bcrypt.hash(password,8).then((hashpassword)=>{
-        const engineer = new Engineer({name,phone,password:hashpassword,email,governorate,city,department}) // res.body = information in postman
+        const engineer = new Engineer({name,phone,password:hashpassword,email,governorate,city,department,payment_amount}) // res.body = information in postman
         console.log(engineer) 
         engineer.save()   
           
@@ -52,7 +52,7 @@ exports.updateEng=async (req,res)=>{
       //  console.log(req.id)
      // user exist
   // نفذ ليا الفانكشن اللى جوا ملف updateUserAuthorization
-     const {avatar,password,name,email,city,governorate,phone}=req.body;
+     const {avatar,password,name,email,city,governorate,phone,payment_amount}=req.body;
        if (avatar){
          // call you func (avatar) 
          // convertAvatar();
@@ -70,6 +70,7 @@ exports.updateEng=async (req,res)=>{
        eng.city=city ? city:eng.city;
        eng.governorate=governorate?governorate:eng.governorate;
        eng.phone=phone ? phone:eng.phone;
+       eng.payment_amount=payment_amount?payment_amount:eng.payment_amount;
        console.log("updatttttt ",eng)
        eng.save();
        return  res.status(200).json({status_code:200, message:"updated",data:Engineer})
