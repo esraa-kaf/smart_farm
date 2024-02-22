@@ -1,10 +1,10 @@
 const mongoose =require('mongoose')
 const AutoIncrement = require("mongoose-sequence")(mongoose)
-const plantsSchema = new mongoose.Schema({
+const plantSchema = new mongoose.Schema({
     _id:{
         type:Number
      },
- name:{
+     name:{
    type:String,
 
  },
@@ -12,19 +12,25 @@ const plantsSchema = new mongoose.Schema({
    type:String,
 
  },
- after_disease:{
+ benifits:{
   type:String,
  },
- category_id:{
+ cat_id:{
     type:Number,
     ref:'CategorgiesModel'
  },
- Is_treatmented:{
-    type:Boolean,
-    default:false
+ vits:{
+    type:String,
+
+ },
+ image:{
+   type:String,
+   require:false
  }
+ 
+
 
 })
-plantsSchema.plugin(AutoIncrement, { id: 'plantsCounter' });
-const plants = mongoose.model('plants',plantsSchema)
+plantSchema.plugin(AutoIncrement, { id: 'plantsCounter' });
+const plants = mongoose.model('plants',plantSchema)
 module.exports=plants

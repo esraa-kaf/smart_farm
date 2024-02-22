@@ -5,7 +5,12 @@ const CategorgiesSchema=new mongoose.Schema({
     type:Number
  },
  name:String,
- enum: ["summer", "winter"]
+
+avatar:{
+   type:String,
+
+}
+
 })
 CategorgiesSchema.plugin(AutoIncrement, { id: 'categoriesCounter' });
 const categories=mongoose.model('categories',CategorgiesSchema)

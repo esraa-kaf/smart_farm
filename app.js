@@ -12,10 +12,13 @@ const bcryptjs = require('bcryptjs');
 require('dotenv').config()
 const userRouter= require('./routes/userRoute') 
 const engineerRouter=require('./routes/engineerRoute')
+const plantsRouter=require('./routes/plantsRoute')
 const authMw  =require('./middleware/authMw')
 const User=require("./models/userModel")
 const Engineer=require('./models/engineerModel')
-app.use([userRouter,engineerRouter])
+const categories =require('./models/CategorgiesModel')
+const plants=require('./models/plantsModel')
+app.use([userRouter,engineerRouter,plantsRouter])
 // app.use(engineerRouter)
 
 ///////////////////////////
