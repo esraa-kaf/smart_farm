@@ -5,10 +5,10 @@ const Engineer=require("../models/engineerModel")
  exports.loginUser =async(req, res)=>{
   // console.log("rrrr ",req)
   console.log(req.body);
-    const { number, password } = req.body;
+    const { email, password } = req.body;
     try {
       // Find the user by phonenumber
-      const user = await User.findOne({ number });
+      const user = await User.findOne({ email });
       console.log(user);
      
       // Check if the user exists 
@@ -16,7 +16,7 @@ const Engineer=require("../models/engineerModel")
         //use bcrypt func (compare)=>(body password ,encrpted password )
         //  console.log(user);
        // generate token
-      const token = await jwt.sign({_id:user._id .toString(),number:user.number}, process.env.secretKey,{expiresIn:'24h'})
+      const token = await jwt.sign({_id:user._id .toString(),email:user.email}, process.env.secretKey,{expiresIn:'48h'})
        console.log(token);
         // check the password matches
         const passwordMatch = await bcrypt.compare(password, user.password);
@@ -31,14 +31,14 @@ const Engineer=require("../models/engineerModel")
             });
      }
      else {
-      throw new Error("invalid number or password")
+      throw new Error("invalid email or password")
 
      }
         }
         else{//user not exist in DB
           throw new Error("invalid number or password")
 
-        }
+         }
        
     } catch (error) {
          res.status(500).json({

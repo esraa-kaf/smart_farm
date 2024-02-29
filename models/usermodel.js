@@ -9,17 +9,21 @@ const userSchema = new mongoose.Schema({
     _id:{
         type:Number
      },
-    number:{
+     
+     email:{
+        type:String,
+        required:true,
+        unique: true,
+        index: true,
+ 
+     },
+     
+    phone:{
         type:String,
         trim:true,
-        minlength:11,
-        validate(val){
-            if(!validator.isNumeric(val)){
-                
-                throw new Error ('you should enter valid phone!')
-            }
-        }
-    },
+        // unique:true
+       
+        },
     password:{
         type:String,
         required:true,

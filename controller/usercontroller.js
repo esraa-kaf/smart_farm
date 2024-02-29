@@ -16,11 +16,11 @@ if(password!=confirm_password){
 
 
 exports.createNewUser=async(req,res)=>{
-    const {name,number,password, governorate,city}=req.body;
+    const {name,phone,email,password, governorate,city}=req.body;
     // comparePassword(password ,confirm_password)
     
        bcrypt.hash(password,8).then((hashpassword)=>{
-        const user =new User({number:number,password:hashpassword,name,governorate,city}) // res.body = information in postman
+        const user =new User({phone,password:hashpassword,name,email,governorate,city}) // res.body = information in postman
         user.save()   
 
         .then((user) =>{res.status(200).json({
@@ -138,7 +138,7 @@ exports.updateUser=async (req,res)=>{
      //  console.log(req.id)
     // user exist
  // نفذ ليا الفانكشن اللى جوا ملف updateUserAuthorization
-    const {avatar,password,name,city,governorate,number}=req.body;
+    const {avatar,password,name,email,city,governorate,number}=req.body;
       if (avatar){
         // call you func (avatar) 
         // convertAvatar();
@@ -153,6 +153,7 @@ exports.updateUser=async (req,res)=>{
     user.name=name? name : user.name;
     user.password=password?hashedPassword:user.password;
     user.city=city ? city:user.city;
+    eng.email=email?email:eng.email;
     user.governorate=governorate?governorate:user.governorate;
     user.number=number ? number:user.number;
     console.log("updatttttt ",user)
@@ -194,68 +195,65 @@ exports.checkAuthorizationInnerUser=async(req,res, next)=>{
 
 
 /// forget password by phone
-exports.forgetPasswordByPhone=async(req,res)=>{
-  const { number } = req.body;
-   // Find the user by phonenumber
-   const user = await User.findOne({ number });
-   console.log(user);
-   if(!user){
-    res.status(401).json({
-      success: false,
-       message: "user isn't exist"
-      })
-  }
+// exports.forgetPasswordByPhone=async(req,res)=>{
+//   const { number } = req.body;
+//    // Find the user by phonenumber
+//   //  const user = await User.findOne({ number });
+//   //  console.log(user);
+//   //  if(!user){
+//   //   res.status(401).json({
+//   //     success: false,
+//   //      message: "user isn't exist"
+//   //     })
+//   // }
   
-  // Generate a random 6-digit OTP
-function generateOTP() {
-  return Math.floor(100000 + Math.random() * 900000);
-}
-const otp = generateOTP();
-console.log("otp         ===> ",otp);
-// In-memory storage for OTPs 
-const otpStorage = {};
-otpStorage[number] = otp;
-///////////////////////////////////////
-const accountSid = process.env.accountSid;
-const authToken = process.env.authToken;
-const twilioClient = require('twilio')(accountSid, authToken);
-  // Send OTP via SMS
-function sendOTP(number, otp) {
-  return twilioClient.messages.create({
-    body: `Your OTP for password reset: ${otp}`,
-    from: '+18667402946',
-    to: number,
-  });
-}
-
-
-
-sendOTP(number, otp)
-.then(() => {
-  res.json({ success: true, message: 'OTP sent successfully' });
-})
-.catch((error) => {
-  console.error('Error sending OTP:', error);
-  if (error.code && error.moreInfo) {
-    console.error(`Twilio Error Code: ${error.code}`);
-    console.error(`Twilio More Info: ${error.moreInfo}`);
-  }
-  res.status(500).json({ success: false, message: 'Error sending OTP' });
-});
-// try{
-//   twilioClient.messages .create({
+//   // Generate a random 6-digit OTP
+// function generateOTP() {
+//   return Math.floor(100000 + Math.random() * 900000);
+// }
+// const otp = generateOTP();
+// console.log("otp         ===> ",otp);
+// // In-memory storage for OTPs 
+// const otpStorage = {};
+// otpStorage[number] = otp;
+// ///////////////////////////////////////
+// const accountSid = process.env.accountSid;
+// const authToken = process.env.authToken;
+// const twilioClient = require('twilio')(accountSid, authToken);
+//   // Send OTP via SMS
+// function sendOTP(number, otp) {
+//   return twilioClient.messages.create({
 //     body: `Your OTP for password reset: ${otp}`,
-//     from: '+201024033970',   // From a valid Twilio number
-//     to: `${req.body.number}`, // Text your number
-    
-//   })
-//   res.json({ success: true, message: 'Password reset otp sent successfully.' })
-//   }
+//     from: '+16503628529', // your twillo number
+//     to: number, 
+//   });
+// }
 
-//   catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: 'Failed to send reset otp.' });
-//   }
+// sendOTP(number, otp)
+// .then(() => {
+//   res.json({ success: true, message: 'OTP sent successfully' });
+// })
+// .catch((error) => {
+//   console.error('Error sending OTP:', error);
+//   res.status(500).json({ success: false, message: 'Failed to send reset otp' });
+// });
+
+
+
+// // try{
+// //   twilioClient.messages .create({
+// //     body: `Your OTP for password reset: ${otp}`,
+// //     from: '+201024033970',   // From a valid Twilio number
+// //     to: `${req.body.number}`, // Text your number
+    
+// //   })
+// //   res.json({ success: true, message: 'Password reset otp sent successfully.' })
+// //   }
+
+// //   catch (error) {
+// //     console.error(error);
+// //     res.status(500).json({ success: false, message: 'Failed to send reset otp.' });
+// //   }
   
 
-}
+// }

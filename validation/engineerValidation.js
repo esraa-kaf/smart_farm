@@ -1,5 +1,6 @@
 const {body, check,param}=require("express-validator");
 const Engineer = require("../models/engineerModel");
+
 /////////////////////////////////////////////////////////*******************************/////////////////////////////////////////////////
 exports.validateNewEng=[
     body("name").notEmpty().withMessage("name is required .").isString().withMessage("name must string"),
@@ -46,7 +47,17 @@ exports.validateNewEng=[
           }
         });
       })
-    
+  ,
+  body("national_id").notEmpty().withMessage("national_id is required"),
+  check("national_id").custom((value)=>{
+  let nationalIdArr =['30208161300084','30207011311693','30204011316424','30206081201716','30207241301298 ']
+    if(nationalIdArr.includes(value)){
+      return Promise.reject('fallid national ')
+    }
+  })
+  
+ 
+
 ]
 
 ////
@@ -91,6 +102,13 @@ exports.updateEngById=[
     })
   ,
   body("governorate").optional().isString().withMessage("governorate must string"),
+  body("national_id").notEmpty().withMessage("national_id is required"),
+  check("national_id").custom((value)=>{
+  let nationalIdArr =['30208161300084','30207011311693','30204011316424','30206081201716','30207241301298 ']
+    if(nationalIdArr.includes(value)){
+      return Promise.reject('fallid national ')
+    }
+  }),
   param("id").isLength({max:24})
       
 

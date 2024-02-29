@@ -49,7 +49,17 @@ const engineerSchema = new mongoose.Schema({
      required:true,
      type:Number
     },
- 
+    national_id:{
+    required:true,
+    type:String,
+    
+    }
+    ,
+    // rate:{
+    // required:true,
+    
+    // }
+    // ,
      avatar:{
     type:String,
     default: 'd:\Films\special\خطوبتى\IMG_4338.jpg'

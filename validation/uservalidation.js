@@ -9,13 +9,7 @@ exports.validateNewUser=[
         minUppercase: 1,
         minNumbers: 1,
         minSymbols: 1,
-        // returnScore: false,
-        // pointsPerUnique: 1,
-        // pointsPerRepeat: 0.5,
-        // pointsForContainingLower: 10,
-        // pointsForContainingUpper: 10,
-        // pointsForContainingNumber: 10,
-        // pointsForContainingSymbol: 10,
+
       }).withMessage("password must be a strong "),
 
 //   check("password").custom ((value)=>{ اخطاءك
@@ -27,14 +21,29 @@ exports.validateNewUser=[
 //         }
         
 //       }),
-    body("number").notEmpty().withMessage("number is required .").isNumeric().withMessage("number must be number").isLength(11).withMessage("number must be 11 char"),
-    check("number").custom((value) => {
-        return User.findOne( { number: value }).then((user) => {
+    body("phone").notEmpty().withMessage("number is required .").isNumeric().withMessage("number must be number").isLength(11).withMessage("number must be 11 char"),
+    check("phone").custom((value) => {
+        return User.findOne( { phone: value }).then((user) => {
           if (user) {
-            return Promise.reject("number already in use");
+            return Promise.reject("phone already in use");
           }
         });
       }),
+    check("email").custom((value) => {
+      console.log("valllll     ",value)
+        return User.findOne( { email:value }).then((user) => {
+          console.log("eeeeeeeeeeee",user);
+
+          if (user) {
+            console.log("user        ",user);
+            return Promise.reject("email already in use");
+          }
+          else{
+            console.log("hhhhhhhhhhhhhh",user);
+          }
+        });
+      })
+      ,
     body("city").notEmpty().withMessage("city is required .").isString().withMessage("city must string"),
     body("governorate").notEmpty().withMessage("governorate is required .").isString().withMessage("governorate must string")
     
@@ -52,18 +61,33 @@ exports.updateUserById=[
       minSymbols: 1,
      
     }).withMessage("password must be a strong "),
-  body("number").optional().isNumeric().withMessage("number must be number").isLength(11).withMessage("number must be 11 char"),
-  check("number").optional().custom((value) => {
+  body("phone").optional().isNumeric().withMessage("phone must be number").isLength(11).withMessage("phone must be 11 char"),
+  check("phone").optional().custom((value) => {
    // console.log("usssssssssser  req ",req.req._id)
     //const user_id=+req.req._id
-      return User.findOne( { number: value }).then((user) => {
+      return User.findOne( { phone: value }).then((user) => {
        //console.log("usssssssssser  req ",user)
 
         if (user) {
-          return Promise.reject("number already in use");
+          return Promise.reject("phone already in use");
         }
       });
     }),
+    check("email").custom((value) => {
+      console.log("valllll     ",value)
+        return User.findOne( { email:value }).then((user) => {
+          console.log("eeeeeeeeeeee",user);
+
+          if (user) {
+            console.log("engineer        ",user);
+            return Promise.reject("email already in use");
+          }
+          else{
+            console.log("hhhhhhhhhhhhhh",user);
+          }
+        });
+      })
+      ,
   body("city").optional().isString().withMessage("city must string"),
   body("governorate").optional().isString().withMessage("governorate must string"),
   param("id").isLength({max:24})

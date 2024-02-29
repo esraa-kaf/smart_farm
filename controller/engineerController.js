@@ -9,12 +9,15 @@ const nodeCache = require( "../config/configCache" );
 
 
 exports.createNewEng=async(req,res)=>{
-    const {name,phone,email,password, governorate,city,department,payment_amount}=req.body;
+
+    const {name,phone,email,password, national_id,governorate,city,department,payment_amount}=req.body;
+    let testArray =['30208161300084','30207011311693','30204011316424','30206081201716','30207241301298 ']
        
     
        bcrypt.hash(password,8).then((hashpassword)=>{
-        const engineer = new Engineer({name,phone,password:hashpassword,email,governorate,city,department,payment_amount}) // res.body = information in postman
+        const engineer = new Engineer({name,phone,password:hashpassword,email,governorate,city,department,payment_amount,national_id}) // res.body = information in postman
         console.log(engineer) 
+
         engineer.save()   
           
         .then((engineer) =>{res.status(200).json({
