@@ -1,12 +1,11 @@
 
 const e = require("express");
-const User = require("../models/userModel");
+const User = require("../models/usersModel");
 const path =require('path')
 const bcrypt = require('bcryptjs');
 const imageMw=require("../middleware/imageMw");
-const { error } = require("console");
-const twilio = require('twilio');
-// const { checkUserPermession } = require("../middleware/updateUserAuthorization");
+const nodemailer = require('nodemailer')
+const nodeCache = require("../config/configCache");
 const notFoundMsg="user not exist to update!";
 function comparePassword(password,confirm_password){
 if(password!=confirm_password){
@@ -26,7 +25,7 @@ exports.createNewUser=async(req,res)=>{
         .then((user) =>{res.status(200).json({
           status_code:200,
           data:user,
-        message:"user created successfully"
+        message:"تم انشاء الحساب بنجاح"
         })}) 
          // if it is not okay , show me error
         .catch((error)=>{res.status(500).json({          
@@ -158,7 +157,7 @@ exports.updateUser=async (req,res)=>{
     user.number=number ? number:user.number;
     console.log("updatttttt ",user)
     user.save();
-      return  res.status(200).json({status_code:200, message:"updated",data:User})
+      return  res.status(200).json({status_code:200, message:"تم تحديث البيانات بنجاح",data:User})
    
   }
     
@@ -190,70 +189,113 @@ exports.checkAuthorizationInnerUser=async(req,res, next)=>{
       next()
     }
 }
+////////////////////////////////////////////////////////////////////////////////////
+function generateRandomString() {
+  return Math.floor(Math.random() * Date.now()).toString(36);
 
 
+}
 
+exports.forgetPassword=async(req,res)=>{
+  const { email } = req.body
+  const randomString = generateRandomString();
+  console.log("randomString   ====>", randomString);
+  const user = await User.findOne({ email })
+  // console.log(eng);
 
-/// forget password by phone
-// exports.forgetPasswordByPhone=async(req,res)=>{
-//   const { number } = req.body;
-//    // Find the user by phonenumber
-//   //  const user = await User.findOne({ number });
-//   //  console.log(user);
-//   //  if(!user){
-//   //   res.status(401).json({
-//   //     success: false,
-//   //      message: "user isn't exist"
-//   //     })
-//   // }
+  if (!user) {
+    res.status(401).json({
+      success: false,
+      message: "user isn't exist"
+    })
+  }
+  // generatr fuc call here 
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'esraakaf3@gmail.com',
+      pass: `${[process.env.auth_path]}`,
+    },
+  });
+  const mailOption = {
+    from: 'esraakaf3@gmail.com',
+    to: `${req.body.email}`,
+    subject: 'Message',
+    text: 'I hope this message gets delivered!',
+    html: `
+       <html>
+       <head>Reset password Request</head>
+       <body>
+       <h1>Reset password </h1>
+        <p> Dear ${user.name}</p>
+        <p> we have recieved a request to reset password , to complete please click on this button </p>
+         <button style= "background-color: #04AA6D; padding: 15px 32px;width: 200px;
+         color:white;" ><a style="color:white" href=${process.env.live_url}/reset/${randomString}</a>Reset password</button>
+        <p> thank you </p> 
+              
+       </body>
+       </html>
+
+      `
+  }
   
-//   // Generate a random 6-digit OTP
-// function generateOTP() {
-//   return Math.floor(100000 + Math.random() * 900000);
-// }
-// const otp = generateOTP();
-// console.log("otp         ===> ",otp);
-// // In-memory storage for OTPs 
-// const otpStorage = {};
-// otpStorage[number] = otp;
-// ///////////////////////////////////////
-// const accountSid = process.env.accountSid;
-// const authToken = process.env.authToken;
-// const twilioClient = require('twilio')(accountSid, authToken);
-//   // Send OTP via SMS
-// function sendOTP(number, otp) {
-//   return twilioClient.messages.create({
-//     body: `Your OTP for password reset: ${otp}`,
-//     from: '+16503628529', // your twillo number
-//     to: number, 
-//   });
-// }
+  transporter.sendMail(mailOption, async (err, data) => {
+    if (err) {
+      // console.log(err);
+      res.status(500).json({ err: err.message });
 
-// sendOTP(number, otp)
-// .then(() => {
-//   res.json({ success: true, message: 'OTP sent successfully' });
-// })
-// .catch((error) => {
-//   console.error('Error sending OTP:', error);
-//   res.status(500).json({ success: false, message: 'Failed to send reset otp' });
-// });
+    } else {
+      /////////////////////////// create an obj ///////////////
+      const userObj = {
+        hash: randomString,
+        expireTime: `${new Date().getMinutes() + 120}`,
+        email: email
+      }
+      // console.log(userObj.expireTime);
 
 
+      //// send this obj in cash ////
+      let cash = nodeCache.getMyCash()
+      cash.set(`${userObj.hash}`, { hash: userObj.hash, email: userObj.email, expireTime: userObj.expireTime }, 7200)
+      res.status(200).send('success email');
 
-// // try{
-// //   twilioClient.messages .create({
-// //     body: `Your OTP for password reset: ${otp}`,
-// //     from: '+201024033970',   // From a valid Twilio number
-// //     to: `${req.body.number}`, // Text your number
-    
-// //   })
-// //   res.json({ success: true, message: 'Password reset otp sent successfully.' })
-// //   }
+    }
+  });
+}
 
-// //   catch (error) {
-// //     console.error(error);
-// //     res.status(500).json({ success: false, message: 'Failed to send reset otp.' });
-// //   }
-  
+////////////////////////////////////////////////////
+exports.resetPassword=async(req,res)=>{
+  const { newPassword } = req.body
+  const { hash } = req.params
 
-// }
+  try {
+
+    let userTest = nodeCache.getMyCash().get(`${hash}`)
+    console.log("userTest   ================  ", userTest);
+    let current_date = new Date()
+    if (userTest && userTest.expireTime > current_date) {
+      return res.status(400).json({ message: 'Invalid or expired reset .' })
+    }
+
+    const user = await User.findOne({ email: userTest.email })
+    let hashedPassword;
+    if (newPassword) {
+
+      hashedPassword = await bcrypt.hash(newPassword, 8)
+    }
+
+    user.password = hashedPassword
+    user.save()
+    console.log("user    ", user);
+    // delete my hash from my cache 
+    let cash = nodeCache.getMyCash()
+    cash.del(hash);
+    return res.status(200).json({ message: 'تم تغيير كلمه المرور بنجاح' })
+
+
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error.' })
+  }
+}

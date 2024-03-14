@@ -1,8 +1,8 @@
 const mongoose =require('mongoose')
-const validator =require('validator')
-const bcrypt = require('bcryptjs');
-const { option, string } = require('yargs');
-var jwt = require('jsonwebtoken');
+// const validator =require('validator')
+// const bcrypt = require('bcryptjs');
+// const { option, string } = require('yargs');
+// var jwt = require('jsonwebtoken');
 const AutoIncrement = require("mongoose-sequence")(mongoose)
 
 const userSchema = new mongoose.Schema({

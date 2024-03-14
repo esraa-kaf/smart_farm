@@ -1,18 +1,15 @@
 const express=require('express')
-const User = require('../models/userModel')
 const router= express.Router()
-// const bcrypt = require('bcryptjs');
+
 // var jwt = require('jsonwebtoken');
 
 const  usercontroller = require('../controller/usercontroller')
 const logincontroller= require('../controller/logincontroller')
 const errorMW=require('../middleware/errorMw')
 const authMw =require('../middleware/authMw')
-// const imageMw=require('../middleware/imageMw')
-//const updateUserAuthorization=require('../middleware/updateUserAuthorization')
 
-const {validateNewUser,updateUserById,validateIdLength,generateToken}=require("../validation/uservalidation")
-const { unescape } = require('validator')
+
+const {validateNewUser,updateUserById,validateIdLength}=require("../validation/uservalidation")
 
 
 
@@ -21,7 +18,7 @@ router.post('/new-user' ,updateUserById,validateNewUser,errorMW,usercontroller.c
        
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //login
-router.post('/signin',logincontroller.loginUser ,generateToken);
+router.post('/signin',logincontroller.loginUser );
  
 // update user by
  router.put('/user/:id',authMw, usercontroller.checkAuthorizationInnerUser  ,updateUserById  , errorMW  , usercontroller.updateUser);
@@ -35,13 +32,10 @@ router.get('/user', authMw,usercontroller.findAll);
 // delete one user by id
 router.delete('/user/:id', authMw, usercontroller.checkAuthorizationInnerUser,validateIdLength,usercontroller.deleteUser);
 
-// upload image
-
-// router.post('/convert', imageMw.convertAvatar)
-
-// forget
-// router.post('/forget-passwordByPhone',usercontroller.forgetPasswordByPhone)
-
+// forgetpassword for user
+router.post('/forget-password', usercontroller.forgetPassword)
+// reset password
+router.post('/reset-password/:hash',usercontroller.resetPassword)
 
 
 

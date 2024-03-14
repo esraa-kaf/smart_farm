@@ -10,7 +10,6 @@ const engineerSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique:true,
-        
          },
     phone:{
         type:String,
@@ -33,13 +32,15 @@ const engineerSchema = new mongoose.Schema({
 
     },
     governorate: { 
-        type: String,
-         required: true
+        type: Number,
+         required: true,
+         ref:'Government'
       },
 
     city: {
-     type: String,
-     required: true
+     type: Number,
+     required: true,
+     ref:'City'
         },
     department:{
     type: String,
@@ -55,25 +56,14 @@ const engineerSchema = new mongoose.Schema({
     
     }
     ,
-    // rate:{
-    // required:true,
-    
-    // }
-    // ,
-     avatar:{
+    Faculty :{
+        type:String
+    }
+    ,
+    avatar:{
     type:String,
     default: 'd:\Films\special\خطوبتى\IMG_4338.jpg'
-
-
    }  
-   
-   
-   
-   //,
-//   randomString: {
-//     type: String
-
-//   }
 }
 )
 engineerSchema.plugin(AutoIncrement, { id: 'engineerCounter' });

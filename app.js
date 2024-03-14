@@ -1,7 +1,7 @@
 const express = require('express');
 var bodyParser = require('body-parser')
 const nodeCache = require( "./config/configCache" );
-
+const path=require("path")
 const app = express();
 app.use(express.json({limit: '25mb'}));
 app.use(bodyParser.text({ limit: '5mb' })); // Parse text body with a limit of 5MB
@@ -14,10 +14,14 @@ const userRouter= require('./routes/userRoute')
 const engineerRouter=require('./routes/engineerRoute')
 const plantsRouter=require('./routes/plantsRoute')
 const authMw  =require('./middleware/authMw')
-const User=require("./models/userModel")
-const Engineer=require('./models/engineerModel')
+const User=require("./models/usersModel")
+const Engineer=require('./models/engineersModel')
 const categories =require('./models/CategorgiesModel')
 const plants=require('./models/plantsModel')
+const RatingEng=require('./models/ratingsModel')
+const Government=require('./models/governmentModel')
+const City=require('./models/cityModel')
+const Certificates=require('./models/CertificatesModel')
 app.use([userRouter,engineerRouter,plantsRouter])
 // app.use(engineerRouter)
 
@@ -137,9 +141,10 @@ app.use([userRouter,engineerRouter,plantsRouter])
 
 
 
-
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 mongoose.connect('mongodb://127.0.0.1:27017/myApp').then(()=>{
+
     const PORT =process.env.PORT ||3000;
     app.listen(PORT, ()=>{
       nodeCache.init()

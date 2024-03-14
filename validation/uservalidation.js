@@ -1,16 +1,16 @@
 const {body, check,param}=require("express-validator");
-const User = require("../models/userModel");
+const User = require("../models/usersModel");
 /////////////////////////////////////////////////////////*******************************/////////////////////////////////////////////////
 exports.validateNewUser=[
-    body("name").notEmpty().withMessage("name is required .").isString().withMessage("name must string"),
-    body("password").notEmpty().withMessage("name is required .").withMessage("password mustn't increase 12").isStrongPassword({
-        minLength: 8,
-        minLowercase: 1,
-        minUppercase: 1,
-        minNumbers: 1,
-        minSymbols: 1,
+    body("name").notEmpty().withMessage(" لازم تدخل اسمك").isString().withMessage("name must string"),
+    body("password").notEmpty().withMessage(" لازم تدخل كلمه المرور").isStrongPassword({
+        minLength: 6,
+        // minLowercase: 1,
+        // minUppercase: 1,
+        // minNumbers: 1,
+        // minSymbols: 1,
 
-      }).withMessage("password must be a strong "),
+      }).withMessage("كلمه المرور لازم تكون اكبر من 6 حروف او ارقام  "),
 
 //   check("password").custom ((value)=>{ اخطاءك
 //         console.log("===================")
@@ -21,22 +21,22 @@ exports.validateNewUser=[
 //         }
         
 //       }),
-    body("phone").notEmpty().withMessage("number is required .").isNumeric().withMessage("number must be number").isLength(11).withMessage("number must be 11 char"),
+    body("phone").notEmpty().withMessage(" لازم تدخل رقمك").isNumeric().withMessage("لازم يكون ارقام بس").isLength(11).withMessage("لازم يكون 11 رقم"),
     check("phone").custom((value) => {
         return User.findOne( { phone: value }).then((user) => {
           if (user) {
-            return Promise.reject("phone already in use");
+            return Promise.reject("الرقم دا مستخدم قبل كدا ");
           }
         });
       }),
     check("email").custom((value) => {
-      console.log("valllll     ",value)
+      // console.log("valllll     ",value)
         return User.findOne( { email:value }).then((user) => {
-          console.log("eeeeeeeeeeee",user);
+          // console.log("eeeeeeeeeeee",user);
 
           if (user) {
-            console.log("user        ",user);
-            return Promise.reject("email already in use");
+            // console.log("user        ",user);
+            return Promise.reject("الايميل مستخدم قبل كدا");
           }
           else{
             console.log("hhhhhhhhhhhhhh",user);
@@ -54,14 +54,14 @@ exports.validateNewUser=[
 exports.updateUserById=[
   body("name").optional().isString().withMessage("name must string"),
   body("password").optional().isStrongPassword({
-      minLength: 8,
-      minLowercase: 1,
-      minUppercase: 1,
-      minNumbers: 1,
-      minSymbols: 1,
+      minLength: 6,
+      // minLowercase: 1,
+      // minUppercase: 1,
+      // minNumbers: 1,
+      // minSymbols: 1,
      
     }).withMessage("password must be a strong "),
-  body("phone").optional().isNumeric().withMessage("phone must be number").isLength(11).withMessage("phone must be 11 char"),
+  body("phone").optional().isNumeric().withMessage(" لازم تدخل رقمك").isLength(11).withMessage("لازم يكون 11 رقم"),
   check("phone").optional().custom((value) => {
    // console.log("usssssssssser  req ",req.req._id)
     //const user_id=+req.req._id
@@ -69,7 +69,7 @@ exports.updateUserById=[
        //console.log("usssssssssser  req ",user)
 
         if (user) {
-          return Promise.reject("phone already in use");
+          return Promise.reject("الرقم دا مستخدم قبل كدا ");
         }
       });
     }),
@@ -80,7 +80,7 @@ exports.updateUserById=[
 
           if (user) {
             console.log("engineer        ",user);
-            return Promise.reject("email already in use");
+            return Promise.reject("الايميل مستخدم قبل كدا");
           }
           else{
             console.log("hhhhhhhhhhhhhh",user);
