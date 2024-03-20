@@ -22,11 +22,13 @@ exports.loginUser = async (req, res) => {
       else {
         const token = jwt.sign({ _id: user._id, email: user.email }, process.env.secretKey, { expiresIn: '24h' })
         console.log("token", token);
+      user._doc.token = token //set key to eng object at real time
+
         return res.json({
           success: true,
           data: user,
           message: 'تم تسجيل الدخول بنجاح',
-          token
+          // token
         });
 
       }
@@ -59,13 +61,15 @@ exports.loginEng = async (req, res) => {
       const token = await jwt.sign({ _id: eng._id.toString(), email: eng.email }, process.env.secretKey, { expiresIn: '48h' })
       console.log(token);
       // check the password matches
+      eng._doc.token = token //set key to eng object at real time
+
       const passwordMatch = await bcrypt.compare(password, eng.password);
       if (passwordMatch) { //eng exist but we check password 
         res.json({
           success: true,
           data: eng,
           message: 'تم تسجيل الدخول بنجاح',
-          token
+          // token
         });
       }
       else {

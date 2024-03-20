@@ -20,7 +20,15 @@ exports.createNewEng = async (req, res) => {
   try {
     let hashpassword = await bcrypt.hash(password, 8);
     if (hashpassword) {
-      const engineer = new Engineer({ name, phone, password: hashpassword, email, governorate, city, department, payment_amount, national_id, Faculty }) // res.body = information in postman
+      const engineer = new Engineer({ name, phone, password: hashpassword, email, governorate, city, department, payment_amount, national_id, Faculty })
+      
+      // res.body = information in postman
+      const token = jwt.sign({ _id: engineer._id, email: engineer.email }, process.env.secretKey, { expiresIn: '24h' })
+      console.log("token", token);
+      engineer._doc.token = token 
+
+
+
       await engineer.save()
       if (engineer) {
         if (certificates) {
