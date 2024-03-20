@@ -15,6 +15,7 @@ if(password!=confirm_password){
 }
 
 
+
 exports.createNewUser=async(req,res)=>{
     const {name,phone,email,password, governorate,city}=req.body;
     // comparePassword(password ,confirm_password)
