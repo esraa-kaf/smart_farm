@@ -143,7 +143,7 @@ app.use([userRouter,engineerRouter,plantsRouter])
 
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-mongoose.connect('mongodb+srv://esraakaf3:<IZj9EVHTPX7i7EUB>@esraakaf.vu1anyf.mongodb.net/')
+mongoose.connect('mongodb+srv://esraakaf3:IZj9EVHTPX7i7EUB@esraakaf.vu1anyf.mongodb.net/')
 .then(()=>{
 
     const PORT =process.env.PORT ||3000;
