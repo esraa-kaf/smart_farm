@@ -25,6 +25,12 @@ const Certificates=require('./models/CertificatesModel')
 app.use([userRouter,engineerRouter,plantsRouter])
 // app.use(engineerRouter)
 
+exports.handler = (event, context, callback) => {
+
+  callback(null, 'Lambda function initialized successfully!');
+
+};
+
 ///////////////////////////
 // const date = new Date();
 // data =date.getDate()
