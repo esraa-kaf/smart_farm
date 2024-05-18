@@ -4,7 +4,17 @@ const nodeCache = require( "./config/configCache" );
 const path=require("path")
 const app = express();
 app.use(express.json({limit: '25mb'}));
-app.use(bodyParser.text({ limit: '5mb' })); // Parse text body with a limit of 5MB
+// Parse text body with a limit of 5MB
+app.use(bodyParser.text({ limit: '5mb' }));
+app.get("/",(req,res,next)=>{
+  return res.status(200).json({message:"welcome to my App"})
+})
+
+
+
+
+
+
 const mongoose = require('mongoose')
 var jwt = require('jsonwebtoken');
 const validator = require('validator')
@@ -23,6 +33,10 @@ const Government=require('./models/governmentModel')
 const City=require('./models/cityModel')
 const Certificates=require('./models/CertificatesModel')
 app.use([userRouter,engineerRouter,plantsRouter])
+app.all('*',(req,res,next)=>{
+  res.status(404).send("in-valid routing")
+})
+
 // app.use(engineerRouter)
 
 ///////////////////////////
