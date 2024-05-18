@@ -99,8 +99,8 @@ exports.updateUserById=[
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.validateIdLength = (req, res, next) => {
   const  _id  = req.params.id;
-  console.log(req.params);
-  console.log(_id.length);
+  // console.log(req.params);
+  // console.log(_id.length);
   // Define the desired length (e.g., 24 characters)
   const desiredLength = 24;
 

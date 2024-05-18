@@ -22,16 +22,16 @@ exports.validateNewEng = [
 
   body("phone").notEmpty().withMessage("phone is required .").isNumeric().withMessage("phone must be number").isLength(11).withMessage("number must be 11 char"),
   check("phone").custom((value) => {
-    console.log("valllll     ", value)
+    // console.log("valllll     ", value)
     return Engineer.findOne({ phone: value }).then((engineer) => {
-      console.log("eeeeeeeeeeee", engineer);
+      // console.log("eeeeeeeeeeee", engineer);
 
       if (engineer) {
-        console.log("engineer        ", engineer);
+        // console.log("engineer        ", engineer);
         return Promise.reject("phone already in use");
       }
       else {
-        console.log("hhhhhhhhhhhhhh", engineer);
+        // console.log("hhhhhhhhhhhhhh", engineer);
       }
     });
   }),
@@ -41,12 +41,12 @@ exports.validateNewEng = [
   body("department").notEmpty().withMessage("department is required").isString().withMessage("department  must string"),
   body("email").notEmpty().withMessage("email  is required").isEmail().withMessage("email must be valid"),
   check("email").custom((value) => {
-    console.log("valllll     ", value)
+    // console.log("valllll     ", value)
     return Engineer.findOne({ email: value }).then((engineer) => {
-      console.log("eeeeeeeeeeee", engineer);
+      // console.log("eeeeeeeeeeee", engineer);
 
       if (engineer) {
-        console.log("engineer        ", engineer);
+        // console.log("engineer        ", engineer);
         return Promise.reject("email already in use");
       }
       else {
@@ -95,12 +95,12 @@ exports.updateEngById = [
   body("payment_amount").notEmpty().withMessage("payment_amount is required").isNumeric().withMessage("payment_amount must be number"),
   body("email").notEmpty().withMessage("email  is required").isEmail().withMessage("email must be valid"),
   check("email").custom((value) => {
-    console.log("valllll     ", value)
+    // console.log("valllll     ", value)
     return Engineer.findOne({ email: value }).then((engineer) => {
       console.log("eeeeeeeeeeee", engineer);
 
       if (engineer) {
-        console.log("engineer        ", engineer);
+        // console.log("engineer        ", engineer);
         return Promise.reject("email already in use");
       }
       else {
@@ -154,11 +154,11 @@ exports.validateRateEngineer = [
   body("rate").notEmpty().withMessage("rate is required").isIn([1, 2, 3, 4, 5]).withMessage("rate must be in 1-5"),
   body("eng_id").notEmpty().withMessage("eng_id is required"),
   check("eng_id").custom(async (value) => {
-    console.log(value);
+    // console.log(value);
     let isExist = await Engineer.findOne({ _id: value })
-    console.log("eeeeeeeeeeee", isExist);
+    // console.log("eeeeeeeeeeee", isExist);
     if (isExist == null) {
-      console.log("eng_id        ", isExist);
+      // console.log("eng_id        ", isExist);
       return Promise.reject("eng_id is not exist");
     } else {
       return Promise.resolve();

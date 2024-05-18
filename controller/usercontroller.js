@@ -23,7 +23,7 @@ exports.createNewUser=async(req,res)=>{
        bcrypt.hash(password,8).then((hashpassword)=>{
         const user =new User({phone,password:hashpassword,name,email,governorate,city}) // res.body = information in postman
         const token = jwt.sign({ _id: user._id, email: user.email }, process.env.secretKey, { expiresIn: '24h' })
-        console.log("token", token);
+        // console.log("token", token);
         user._doc.token = token 
         user.save()   
 
@@ -74,11 +74,11 @@ exports.createNewUser=async(req,res)=>{
 //find one user by id
 
 exports.findUser=(req,res)=>{
-  console.log(req.params)
+  // console.log(req.params)
  const _id = req.params.id
   User.findById(_id).then((user)=>{
    if(user){
-    console.log(user);
+    // console.log(user);
      return  res.status(200).json({status_code:200, message:"user is exist",data:data.User})
    }else{
      throw new Error("user is'nt exist")
@@ -90,7 +90,7 @@ exports.findUser=(req,res)=>{
 //find all users  
 
 exports.findAll=(req,res)=>{
-  console.log("rrrrrrr",req._id, req.number)
+  // console.log("rrrrrrr",req._id, req.number)
   User.find({}).then((user)=>{
    if(user){
     // console.log(user);
@@ -135,7 +135,7 @@ exports.updateUser=async (req,res)=>{
     hashedPassword = await bcrypt.hash(newPassword, 8)
   }
  User.findById(_id).then(async (user)=>{
-  console.log(user);
+  // console.log(user);
    if(user!=null){
      //id of user 
      // token id user send req 
@@ -149,7 +149,7 @@ exports.updateUser=async (req,res)=>{
         // return name of image  
         // return file.filename;
         const fileName = await imageMw.proccesAvatar(avatar,'users');
-        console.log("filename   ",fileName)
+        // console.log("filename   ",fileName)
          user.avatar=fileName
       }
         // sec step update
@@ -160,7 +160,7 @@ exports.updateUser=async (req,res)=>{
     eng.email=email?email:eng.email;
     user.governorate=governorate?governorate:user.governorate;
     user.number=number ? number:user.number;
-    console.log("updatttttt ",user)
+    // console.log("updatttttt ",user)
     user.save();
       return  res.status(200).json({status_code:200, message:"تم تحديث البيانات بنجاح",data:User})
    
@@ -184,8 +184,8 @@ exports.updateUser=async (req,res)=>{
 
 exports.checkAuthorizationInnerUser=async(req,res, next)=>{
   // user id req ,  updated
-  console.log(req._id) // دا اللى موجود فى ال token
-  console.log(req.params.id) // دا اللى بدخله فى البرامز
+  // console.log(req._id) // دا اللى موجود فى ال token
+  // console.log(req.params.id) // دا اللى بدخله فى البرامز
   if( req.params.id!= req._id){
       res.status(403).json({status_code:403, message:"you are not authorized to update this user or delete"})
       
@@ -204,7 +204,7 @@ function generateRandomString() {
 exports.forgetPassword=async(req,res)=>{
   const { email } = req.body
   const randomString = generateRandomString();
-  console.log("randomString   ====>", randomString);
+  // console.log("randomString   ====>", randomString);
   const user = await User.findOne({ email })
   // console.log(eng);
 
@@ -276,7 +276,7 @@ exports.resetPassword=async(req,res)=>{
   try {
 
     let userTest = nodeCache.getMyCash().get(`${hash}`)
-    console.log("userTest   ================  ", userTest);
+    // console.log("userTest   ================  ", userTest);
     let current_date = new Date()
     if (userTest && userTest.expireTime > current_date) {
       return res.status(400).json({ message: 'Invalid or expired reset .' })
@@ -291,7 +291,7 @@ exports.resetPassword=async(req,res)=>{
 
     user.password = hashedPassword
     user.save()
-    console.log("user    ", user);
+    // console.log("user    ", user);
     // delete my hash from my cache 
     let cash = nodeCache.getMyCash()
     cash.del(hash);

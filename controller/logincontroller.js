@@ -21,7 +21,7 @@ exports.loginUser = async (req, res) => {
 
       else {
         const token = jwt.sign({ _id: user._id, email: user.email }, process.env.secretKey, { expiresIn: '24h' })
-        console.log("token", token);
+        // console.log("token", token);
       user._doc.token = token //set key to eng object at real time
 
         return res.json({
@@ -54,12 +54,12 @@ exports.loginEng = async (req, res) => {
   try {
     // Find the user by email
     const eng = await Engineer.findOne({ email });
-    console.log(eng);
+    // console.log(eng);
     if (eng != undefined) {//user exist'
 
       // generate token
       const token = await jwt.sign({ _id: eng._id.toString(), email: eng.email }, process.env.secretKey, { expiresIn: '48h' })
-      console.log(token);
+      // console.log(token);
       // check the password matches
       eng._doc.token = token //set key to eng object at real time
 

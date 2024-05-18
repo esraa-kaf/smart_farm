@@ -24,7 +24,7 @@ exports.createNewEng = async (req, res) => {
       
       // res.body = information in postman
       const token = jwt.sign({ _id: engineer._id, email: engineer.email }, process.env.secretKey, { expiresIn: '24h' })
-      console.log("token", token);
+      // console.log("token", token);
       engineer._doc.token = token 
 
 
@@ -34,7 +34,7 @@ exports.createNewEng = async (req, res) => {
         if (certificates) {
             certificates.map((certificate)=>{
               const fileName =  imageMw.proccesAvatar(certificate, 'certificates');
-              console.log("filename   ", fileName);
+              // console.log("filename   ", fileName);
               const Certificate=new Certificates({name:fileName,eng_id:engineer._id});
               Certificate.save();
               // eng.certificates = fileName
@@ -69,7 +69,7 @@ exports.updateEng = async (req, res) => {
     hashedPassword = await bcrypt.hash(newPassword, 8)
   }
   Engineer.findById(_id).then(async (eng) => {
-    console.log(eng);
+    // console.log(eng);
     if (eng != null) {
       //id of user 
       // token id user send req 
@@ -83,7 +83,7 @@ exports.updateEng = async (req, res) => {
         // return name of image  
         // return file.filename;
         const fileName = await imageMw.proccesAvatar(avatar, 'engineers');
-        console.log("filename   ", fileName)
+        // console.log("filename   ", fileName)
         eng.avatar = fileName
       }
       // sec step update
@@ -97,7 +97,7 @@ exports.updateEng = async (req, res) => {
       eng.Faculty = Faculty ? Faculty : eng.Faculty;
       // eng.certificates = certificates ? certificates : eng.certificates;
       eng.payment_amount = payment_amount ? payment_amount : eng.payment_amount;
-      console.log("updatttttt ", eng)
+      // console.log("updatttttt ", eng)
       eng.save();
       return res.status(200).json({ status_code: 200, message: "updated", data: Engineer })
 
@@ -119,8 +119,8 @@ exports.updateEng = async (req, res) => {
 
 exports.checkAuthorizationInnerUser = async (req, res, next) => {
   // user id req ,  updated
-  console.log(req._id) // دا اللى موجود فى ال token
-  console.log(req.params.id) // دا اللى بدخله فى البرامز
+  // console.log(req._id) // دا اللى موجود فى ال token
+  // console.log(req.params.id) // دا اللى بدخله فى البرامز
   if (req.params.id != req._id) {
     res.status(403).json({ status_code: 403, message: "you are not authorized to update this user or delete" })
 
@@ -215,7 +215,7 @@ exports.resetPassword = async (req, res) => {
   try {
 
     let userTest = nodeCache.getMyCash().get(`${hash}`)
-    console.log("userTest   ================  ", userTest);
+    // console.log("userTest   ================  ", userTest);
     let current_date = new Date()
     if (userTest && userTest.expireTime > current_date) {
       return res.status(400).json({ message: 'Invalid or expired reset .' })
@@ -230,7 +230,7 @@ exports.resetPassword = async (req, res) => {
 
     eng.password = hashedPassword
     eng.save()
-    console.log("eng    ", eng);
+    // console.log("eng    ", eng);
     // delete my hash from my cache 
     let cash = nodeCache.getMyCash()
     cash.del(hash);
@@ -247,24 +247,24 @@ exports.resetPassword = async (req, res) => {
 exports.rateEngineer = async (req, res) => {
   const { eng_id, rate } = req.body;
   const user_id = +req._id; // to make id be integar  
-  console.log("ussser   ", user_id)
+  // console.log("ussser   ", user_id)
   try {
 
     let rating = await RatingEng.findOne({ user_id, eng_id })
-    console.log("old rating====   > ", rating)
+    // console.log("old rating====   > ", rating)
 
     if (rating != null) {
       // update
 
-      console.log("old rating====   > ", rating)
-      console.log("i will update")
+      // console.log("old rating====   > ", rating)
+      // console.log("i will update")
       rating.rate = rating ? rate : rating.rate
       await rating.save();
 
     } else {
       // not exist 
       // create
-      console.log("i will create ")
+      // console.log("i will create ")
       const newRate = new RatingEng({ user_id, eng_id, rate });
       await newRate.save();
     }
@@ -295,7 +295,7 @@ exports.findEng = async (req, res) => {
         certificate.name="/public/images/engineers/"+certificate.name
         eng._doc.certificate=certificate.name
       })
-      console.log("eng_certificates   ",eng_certificates);
+      // console.log("eng_certificates   ",eng_certificates);
 
       const ratings = await RatingEng.find({ eng_id: _id });
       let eng_rate = 0; rate_avg = 0;
@@ -348,7 +348,7 @@ exports.createGovernorate = async (req, res) => {
     const { name } = req.body
     const newGovernorate = new Government({ name })
     await newGovernorate.save();
-    console.log("newGovernorate   >>>>", newGovernorate);
+    // console.log("newGovernorate   >>>>", newGovernorate);
     res.status(200).json({ status_code: 200, message: "كله فل الفل ", data: newGovernorate });
 
   }
@@ -376,7 +376,7 @@ exports.createCity = async (req, res) => {
     const { name, government_id } = req.body;
     const newCity = new City({ name, government_id })
     await newCity.save();
-    console.log("newCity  >>>>", newCity);
+    // console.log("newCity  >>>>", newCity);
     res.status(200).json({ status_code: 200, message: "كله فل الفل ", data: newCity });
 
 

@@ -8,14 +8,14 @@ exports.createPlants = async (req, res) => {
   
     const newPlant = new plants({ cat_id, name, about, benifits, vits });
     await newPlant.save();
-    console.log("newPlant   ",newPlant);
+    // console.log("newPlant   ",newPlant);
 // add avatar
 if(image){
   
   // call plants avatar model create row 
 
   const fileName = await imageMw.proccesAvatar(image,'plants');
-  console.log("filename   ",fileName)
+  // console.log("filename   ",fileName)
   newPlant.image = fileName
    newPlant.save();
  
