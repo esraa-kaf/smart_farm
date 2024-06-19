@@ -9,7 +9,7 @@ const errorMW=require('../middleware/errorMw')
 const authMw =require('../middleware/authMw')
 
 
-const {validateNewUser,updateUserById,validateIdLength}=require("../validation/uservalidation")
+const {validateNewUser,updateUserById}=require("../validation/uservalidation")
 
 
 
@@ -24,13 +24,13 @@ router.post('/signin',logincontroller.loginUser );
  router.put('/user/:id',authMw, usercontroller.checkAuthorizationInnerUser  ,updateUserById  , errorMW  , usercontroller.updateUser);
 
 // find user by id
-router.get('/user/:id', authMw,validateIdLength,usercontroller.findUser)
+router.get('/user/:id', authMw,usercontroller.findUser)
 // find all users
 
 router.get('/user', authMw,usercontroller.findAll);
 
 // delete one user by id
-router.delete('/user/:id', authMw, usercontroller.checkAuthorizationInnerUser,validateIdLength,usercontroller.deleteUser);
+router.delete('/user/:id', authMw, usercontroller.checkAuthorizationInnerUser,usercontroller.deleteUser);
 
 // forgetpassword for user
 router.post('/forget-password', usercontroller.forgetPassword)

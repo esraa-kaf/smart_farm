@@ -152,9 +152,9 @@ app.all('*',(req,res,next)=>{
 
 
 
-app.get('',(req,res)=>{
-  res.send('hello zezo')
-})
+// app.get('',(req,res)=>{
+//   res.send('hello zezo')
+// })
 //mongodb://127.0.0.1:27017
 
 app.use("/public", express.static(path.join(__dirname, "public")));

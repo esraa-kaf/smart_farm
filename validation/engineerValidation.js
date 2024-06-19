@@ -35,9 +35,9 @@ exports.validateNewEng = [
       }
     });
   }),
-  body("city").notEmpty().withMessage("city is required .").isNumeric().withMessage("city must number"),
+  body("city").notEmpty().withMessage("city is required .").isString().withMessage("city must string"),
   body("payment_amount").notEmpty().withMessage("payment_amount is required").isNumeric().withMessage("payment_amount must be number"),
-  body("governorate").notEmpty().withMessage("governorate is required .").isNumeric().withMessage("governorate must number"),
+  body("governorate").notEmpty().withMessage("governorate is required .").isString().withMessage("governorate must string"),
   body("department").notEmpty().withMessage("department is required").isString().withMessage("department  must string"),
   body("email").notEmpty().withMessage("email  is required").isEmail().withMessage("email must be valid"),
   check("email").custom((value) => {
@@ -118,7 +118,7 @@ exports.updateEngById = [
     }
   }),
   body("rating").notEmpty().withMessage("rating is required").isNumeric({ min: 1, max: 5 }).withMessage("rating must be number from 1-5"),
-  param("id").isLength({ max: 24 })
+  param("id").isLength({ max: 20 })
 
 
 

@@ -90,27 +90,27 @@ exports.updateUserById=[
       ,
   body("city").optional().isString().withMessage("city must string"),
   body("governorate").optional().isString().withMessage("governorate must string"),
-  param("id").isLength({max:24})
+  // param("id").isLength({max:24})
       
 
 
 ]
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-exports.validateIdLength = (req, res, next) => {
-  const  _id  = req.params.id;
-  // console.log(req.params);
-  // console.log(_id.length);
-  // Define the desired length (e.g., 24 characters)
-  const desiredLength = 24;
+// exports.validateIdLength = (req, res, next) => {
+//   const  _id  = req.params.id;
+//   // console.log(req.params);
+//   // console.log(_id.length);
+//   // Define the desired length (e.g., 24 characters)
+//   const desiredLength = 24;
 
-  if (_id.length !== desiredLength) {
-    return res.status(400).json({ success: false, message: `Invalid id length. It should be ${desiredLength} characters.` });
-  }
+//   if (_id.length !== desiredLength) {
+//     return res.status(400).json({ success: false, message: `Invalid id length. It should be ${desiredLength} characters.` });
+//   }
 
-  // If the id length is valid, proceed to the next middleware or route handler
-  next();
-};
+//   // If the id length is valid, proceed to the next middleware or route handler
+//   next();
+// };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.generateToken=async function(id){

@@ -23,7 +23,7 @@ exports.createNewEng = async (req, res) => {
       const engineer = new Engineer({ name, phone, password: hashpassword, email, governorate, city, department, payment_amount, national_id, Faculty })
       
       // res.body = information in postman
-      const token = jwt.sign({ _id: engineer._id, email: engineer.email }, process.env.secretKey, { expiresIn: '24h' })
+      const token = jwt.sign({ _id: engineer._id, email: engineer.email }, process.env.secretKey, { expiresIn: '72h' })
       // console.log("token", token);
       engineer._doc.token = token 
 
@@ -362,6 +362,7 @@ exports.createGovernorate = async (req, res) => {
 exports.getAllGovernorate = async (req, res) => {
   try {
     const AllGovernorates = await Government.find({})
+    console.log(AllGovernorates);
     res.status(200).json({ status_code: 200, data: AllGovernorates });
   }
   catch (error) {

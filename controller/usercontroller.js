@@ -22,7 +22,7 @@ exports.createNewUser=async(req,res)=>{
     
        bcrypt.hash(password,8).then((hashpassword)=>{
         const user =new User({phone,password:hashpassword,name,email,governorate,city}) // res.body = information in postman
-        const token = jwt.sign({ _id: user._id, email: user.email }, process.env.secretKey, { expiresIn: '24h' })
+        const token = jwt.sign({ _id: user._id, email: user.email }, process.env.secretKey, { expiresIn: '72h' })
         // console.log("token", token);
         user._doc.token = token 
         user.save()   
