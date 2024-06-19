@@ -156,6 +156,12 @@ app.all('*',(req,res,next)=>{
 //   res.send('hello zezo')
 // })
 //mongodb://127.0.0.1:27017
+const fs = require('fs');
+
+// const uploadDir = path.join(__dirname, 'public/images/plants');
+// if (!fs.existsSync(uploadDir)){
+//     fs.mkdirSync(uploadDir, { recursive: true });
+// }
 
 app.use("/public", express.static(path.join(__dirname, "public")));
 
@@ -166,6 +172,7 @@ mongoose.connect('mongodb+srv://mohamed1:12345@esraakaf.vu1anyf.mongodb.net/myAp
     app.listen(PORT,()=>{
       nodeCache.init()
     console.log(`app listening on port ${PORT}`)
+    
   });
 },
 (error)=>{
