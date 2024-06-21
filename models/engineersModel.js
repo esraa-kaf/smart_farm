@@ -62,7 +62,8 @@ const engineerSchema = new mongoose.Schema({
     ,
     avatar:{
     type:String,
-    default: 'd:\Films\special\خطوبتى\IMG_4338.jpg'
+    default: 'https://cdn.pixabay.com/photo/2022/09/18/14/23/baby-7463137_640.jpg'
+    
    }  
 }
 )

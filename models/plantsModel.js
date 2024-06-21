@@ -25,7 +25,7 @@ const plantSchema = new mongoose.Schema({
  },
  image:{
    type:String,
-   require:false
+   require:true
  }
  
 
