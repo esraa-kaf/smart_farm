@@ -94,7 +94,7 @@ exports.createNewCategory = async (req, res) => {
 exports.findPlantsByCategoryId=async(req,res)=>{
   try {
     const SummerPlant = await plants.find({cat_id:req.params.category_id})
-      res.status(200).json({ success: true, plants:SummerPlant });
+      res.status(200).json({ success: true, data:SummerPlant });
     
   } catch (error) {
     console.error(error);
